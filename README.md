@@ -67,8 +67,8 @@ Pcn2feen.load(pcn_document) # => "x:r,x:h,x:e,x:a,x:^g,x:a,x:e,x:h,1/8,x:r/1,x:c
 
 ## Links
 
-* [PCN format][https://developer.sashite.com/documents/pcn/1.0.0]
-* [FEEN format][https://developer.sashite.com/documents/feen/1.0.0]
+* [PCN format](https://developer.sashite.com/documents/pcn/1.0.0)
+* [FEEN format](https://developer.sashite.com/documents/feen/1.0.0)
 
 ## License
 
