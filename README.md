@@ -1,5 +1,9 @@
 # Pcn2feen
 
+[![Build Status](https://secure.travis-ci.org/cyril/pcn2feen.rb.png)](http://travis-ci.org/cyril/pcn2feen.rb)
+[![Dependencies](https://gemnasium.com/cyril/pcn2feen.rb.png?travis)](https://gemnasium.com/cyril/pcn2feen.rb)
+[![Gem Version](https://badge.fury.io/rb/pcn2feen.png)](http://badge.fury.io/rb/pcn2feen)
+
 Pcn2feen is a converter from [Portable Chess Notation (PCN)](https://developer.sashite.com/documents/pcn/1.0.0) to [Forsyth–Edwards Expanded Notation (FEEN)](https://developer.sashite.com/documents/feen/1.0.0), for programmer happiness.
 
 ## Installation
@@ -59,11 +63,6 @@ Pcn2feen.load(pcn_document) # => "x:r,x:h,x:e,x:a,x:^g,x:a,x:e,x:h,1/8,x:r/1,x:c
 3. Commit your changes (`git commit -am 'Add some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)
 5. Create new Pull Request
-
-## Code Status
-
-* [![Build Status](https://secure.travis-ci.org/cyril/pcn2feen.rb.png)](http://travis-ci.org/cyril/pcn2feen.rb)
-* [![Dependencies](https://gemnasium.com/cyril/pcn2feen.rb.png?travis)](https://gemnasium.com/cyril/pcn2feen.rb)
 
 ## Links
 
