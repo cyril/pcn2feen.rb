@@ -1,25 +1,23 @@
-require 'pcn2feen/version'
-
-class Object
-  def deep_map(&block)
-    block.call(self)
-  end
-end
-
-class Array
-  def deep_map(&block)
-    map {|e| e.deep_map(&block) }
-  end
-end
-
 module Pcn2feen
-  def self.load(pcn)
+  class ::Object
+    def deep_map &block
+      block.call self
+    end
+  end
+
+  class ::Array
+    def deep_map &block
+      map {|e| e.deep_map &block }
+    end
+  end
+
+  def self.load pcn
     position = pcn['starting_position']
     captured_pieces = []
     western_piece_are_on_the_board = false
     position.deep_map do |square|
       next unless square
-      western_piece_are_on_the_board = true if square.match(/^w:\+?\^k$/i)
+      western_piece_are_on_the_board = true if square.match(/^w:\+?_k$/i)
     end
     if western_piece_are_on_the_board
       en_passant = nil
@@ -36,7 +34,7 @@ module Pcn2feen
       end
     end
 
-    pcn['previous_moves'].each do |previous_move|
+    pcn['moves'].each do |previous_move|
       en_passant = nil
 
       previous_move.each do |action|
@@ -51,12 +49,12 @@ module Pcn2feen
               piece = square
               square = nil
 
-              if piece.match(/^w:\+?\^k$/)
+              if piece.match(/^w:\+?_k$/)
                 western_top_king_was_moved = true
-              elsif piece.match(/^W:\+?\^K$/)
+              elsif piece.match(/^W:\+?_K$/)
                 western_bottom_king_was_moved = true
               elsif piece.match(/^w:\+?r$/i)
-                western_rooks_had_not_previously_moved_squares.delete(i)
+                western_rooks_had_not_previously_moved_squares.delete i
               end
             end
 
@@ -90,12 +88,12 @@ module Pcn2feen
               piece = square
               square = nil
 
-              if piece.match(/^w:\+?\^k$/)
+              if piece.match(/^w:\+?_k$/)
                 western_top_king_was_moved = true
-              elsif piece.match(/^W:\+?\^K$/)
+              elsif piece.match(/^W:\+?_K$/)
                 western_bottom_king_was_moved = true
               elsif piece.match(/^w:\+?r$/i)
-                western_rooks_had_not_previously_moved_squares.delete(i)
+                western_rooks_had_not_previously_moved_squares.delete i
               end
             end
 
@@ -135,50 +133,59 @@ module Pcn2feen
     end
 
     arr = position
-    lvl = dimensions(arr)
+    lvl = dimensions arr
 
-    squares = squares_separators(arr, lvl)
+    squares = squares_separators arr, lvl
 
     while squares.match(/[0-9],[0-9]/)
       squares.gsub!(/([0-9]),([0-9])/) { $1.to_i + $2.to_i }
     end
 
+    squares.gsub!(',', '')
+
     current_options = {captured_pieces: captured_pieces}
     current_options.merge!({castle: western_rooks_had_not_previously_moved_squares, en_passant: en_passant}) if western_piece_are_on_the_board
-    "#{squares} #{active_side(pcn)} #{options(current_options)}"
+    "#{squares} #{active_side(pcn)[0]} #{options(current_options)}"
   end
 
   private
 
-  def self.active_side(pcn)
-    pcn['next_turn'][0]
+  def self.active_side pcn
+    player_id = pcn['moves'].length % pcn['sides'].keys.length
+    pcn['sides'].keys.fetch player_id
   end
 
-  def self.options(options)
+  def self.options options
     arr = []
 
-    if options[:captured_pieces] && options[:captured_pieces].any?
-      arr << "captures:[#{options[:captured_pieces].sort.join(',')}]"
+    arr << if options[:captured_pieces] && options[:captured_pieces].any?
+      options[:captured_pieces].sort.join ','
+    else
+      '-'
     end
 
-    if options[:castle] && options[:castle].any?
-      arr << "castle:[#{options[:castle].sort.join(',')}]"
+    arr << if options[:castle] && options[:castle].any?
+      options.fetch(:castle).sort.join ','
+    else
+      '-'
     end
 
-    if options[:en_passant]
-      arr << "en_passant:#{options[:en_passant]}"
+    arr << if options[:en_passant]
+      options.fetch :en_passant
+    else
+      '-'
     end
 
-    arr.sort.join(',')
+    arr.join ' '
   end
 
-  def self.dimensions(arr, lvl_id = 1)
+  def self.dimensions arr, lvl_id = 1
     arr[0].class == Array ? dimensions(arr[0], lvl_id + 1) : lvl_id
   end
 
-  def self.squares_separators(arr, lvl)
+  def self.squares_separators arr, lvl
     if lvl == 1
-      arr.map {|square| square ? square : 1 }.join(',')
+      arr.map {|square| square ? square.split(':').last[-1] : 1 }.join ','
     else
       arr.map {|sub_arr| squares_separators(sub_arr, lvl - 1) }.join('/' * (lvl - 1))
     end
