@@ -1,10 +1,13 @@
 # Pcn2feen
 
+Pcn2feen is a converter from [Portable Chess Notation (PCN)](http://sashite.wiki/Portable-Chess-Notation) to [Forsyth–Edwards Expanded Notation (FEEN)](http://sashite.wiki/Forsyth-Edwards-Expanded-Notation), for programmer happiness.
+
+## Status
+
 [![Build Status](https://secure.travis-ci.org/cyril/pcn2feen.rb.png)](http://travis-ci.org/cyril/pcn2feen.rb)
 [![Dependencies](https://gemnasium.com/cyril/pcn2feen.rb.png?travis)](https://gemnasium.com/cyril/pcn2feen.rb)
 [![Gem Version](https://badge.fury.io/rb/pcn2feen.png)](http://badge.fury.io/rb/pcn2feen)
-
-Pcn2feen is a converter from [Portable Chess Notation (PCN)](http://sashite.wiki/Portable-Chess-Notation) to [Forsyth–Edwards Expanded Notation (FEEN)](http://sashite.wiki/Forsyth-Edwards-Expanded-Notation), for programmer happiness.
+![](https://ruby-gem-downloads-badge.herokuapp.com/pcn2feen?type=total)
 
 ## Installation
 
